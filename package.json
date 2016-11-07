@@ -1,0 +1,25 @@
+{
+  "name": "serverless-newsletter-signup",
+  "version": "0.0.1",
+  "description": "Lambda functions which saves user details in DynamoDB.",
+  "author": "Ivan Radunovic",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ivanderbu2/serverless-newsletter-signup.git"
+  },
+  "scripts": {
+    "test": "IS_UNIT_TEST=true SERVELESS_STAGE=unit-test vows test/* --spec"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.6.15",
+    "dotenv": "^2.0.0",
+    "request": "^2.78.0"
+  },
+  "devDependencies": {
+    "lambda-wrapper": "^0.1.2",
+    "mock-aws": "^1.2.3",
+    "nock": "^9.0.2",
+    "vows": "^0.8.1"
+  }
+}
