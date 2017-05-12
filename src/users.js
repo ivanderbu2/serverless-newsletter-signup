@@ -4,11 +4,14 @@ var putItemIntoUsers = require('./putItem.js');
 
 function success(event, cb) {
 	return cb(null, {
-		message: 'success'
+		statusCode: 200,
+		body: JSON.stringify({
+			message: 'success'
+		})
 	});
 }
 
-module.exports.post = function(event, content, cb) {
+module.exports.post = function(event, context, cb) {
 
 	putItemIntoUsers(JSON.parse(event.body), 'users', function(err, data) {
 		if (err) {
