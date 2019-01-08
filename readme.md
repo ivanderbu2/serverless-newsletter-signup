@@ -2,4 +2,8 @@
 
 ## Post Method
 
-Saves user details into DynamoDB table. Required values are email, first_name and last_name.
+Saves user details into DynamoDB table. The only required value is `email`.
+
+```
+curl --data-binary='{"email": "user@example.com"}' https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/users
+```

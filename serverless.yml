@@ -1,18 +1,26 @@
 service: newsletter-signup
 
+custom:
+  tableName: ${self:service}-users-${opt:stage, self:provider.stage}
+  corsOrigin: '*'
+
 provider:
   name: aws
-  runtime: nodejs4.3
-  profile: ${opt:profile}
+  runtime: nodejs8.10
+  environment:
+    TABLE_NAME: ${self:custom.tableName}
+    CORS_ORIGIN: ${self:custom.corsOrigin}
   iamRoleStatements:
     - Effect: Allow
       Action:
-        - dynamodb:Query
         - dynamodb:PutItem
-        - dynamodb:UpdateItem
-        - dynamodb:Scan
-        - dynamodb:GetItem
-      Resource: "arn:aws:dynamodb:us-east-1:*:*"
+      Resource:
+        'Fn::Join':
+          - ':'
+          - - 'arn:aws:dynamodb'
+            - Ref: 'AWS::Region'
+            - Ref: 'AWS::AccountId'
+            - table/${self:custom.tableName}
 
 functions:
   post:
@@ -21,10 +29,7 @@ functions:
       - http:
           path: users
           method: POST
-          cors: true
-          request:
-            template:
-              application/json: '{ "body": "$input.json(''$'')" }'
+          cors: ${self:custom.corsOrigin}
     memorySize: 128
 
 resources:
@@ -32,7 +37,7 @@ resources:
     usersTable:
       Type: AWS::DynamoDB::Table 
       Properties:
-        TableName: users
+        TableName: ${self:custom.tableName}
         AttributeDefinitions:
           - AttributeName: email
             AttributeType: S
